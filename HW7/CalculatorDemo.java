@@ -35,10 +35,20 @@ class CalculatorDemo implements ActionListener{
 		beq=new JButton("=");
 		bdel=new JButton("Delete");
 		bclr=new JButton("Clear");
+		/** 
+		 * @author Anthony Torns II
+		 *  Inverse, Square and Square Root added below
+		*/
     inv = new JButton("1/x");
     squ = new JButton("x^2");
     sqrt = new JButton("sqrt");
-		
+
+		/** @author Anthony Torns II 
+		 * Frame, textfield, and button's have been shrunk and placed close together for compactness and mimics the mac calculator. 
+		 
+		 */
+
+
 		t.setBounds(30,30,280,30);
 
     bclr.setBounds(30,55,60,40);
@@ -91,6 +101,11 @@ class CalculatorDemo implements ActionListener{
 		f.add(badd);
 		f.add(bdel);
 		f.add(bclr);
+
+		/** @author Anthony Torns
+		 * new buttons added to frame
+		*/
+
     f.add(inv);
     f.add(squ);
     f.add(sqrt);
@@ -124,6 +139,10 @@ class CalculatorDemo implements ActionListener{
     sqrt.addActionListener(this);
 
 	}
+
+	/** @author Anthony Torns II
+	 * new buttons added to actionPerformed
+	 */
  
 	public void actionPerformed(ActionEvent e)
 	{
