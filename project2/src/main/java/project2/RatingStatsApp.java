@@ -2,18 +2,22 @@ package project2;
 
 import java.util.Scanner;
 import java.io.IOException;
+import javax.swing.*;
+import awt.*;
 
 /**
  * DO NOT MODIFY: Exploratory Data Analysis of Amazon Product Reviews
  * @author tesic
  * @version 2.0
  */
-public class RatingStatsApp {
+public class RatingStatsApp  {
 
 	// Used to read from System's standard input
 	static final Scanner CONSOLE_INPUT = new Scanner(System.in);
+	
 
 	public static void main(final String[] args) {
+		JOptionPane loadWindow = new JOptionPane();
 
 		String selection = "";
 
@@ -21,9 +25,9 @@ public class RatingStatsApp {
 			DatasetHandler dh = new DatasetHandler();
 			int dbSize = dh.getDataSets();
 
-			System.out.println("Loading the datasets from:" + dh.getFolderPath() + System.lineSeparator());
-			System.out.println(dh.printDB());
-			System.out.println("     " + dbSize + " datasets available");
+			loadWindow.showMessageDialog(null, "Loading the datasets from:" + dh.getFolderPath() + System.lineSeparator());
+			loadWindow.showMessageDialog(null, dh.printDB() + System.lineSeparator() + "     " + dbSize + " datasets available");
+
 
 			final String welcomeMessage = "Choose one of the following functions:" + System.lineSeparator()
 					+ "\t 1. Display computed statistics for specific dataID." + System.lineSeparator()
@@ -107,8 +111,9 @@ public class RatingStatsApp {
 			} // end while
 
 		} catch (IOException e) {
-			System.out.println("Dataset path not found: " + e.getMessage());
+			
+			loadWindow.showMessageDialog(null, "Dataset path not found: " + e.getMessage());
 		}
-		System.out.println("Goodbye!");
+	loadWindow.showMessageDialog(null, "Goodbye!");
 	}// end mail
 }// end class
