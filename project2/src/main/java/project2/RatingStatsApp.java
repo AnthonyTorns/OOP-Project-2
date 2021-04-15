@@ -3,7 +3,7 @@ package project2;
 import java.util.Scanner;
 import java.io.IOException;
 import javax.swing.*;
-import awt.*;
+import java.awt.*;
 
 /**
  * DO NOT MODIFY: Exploratory Data Analysis of Amazon Product Reviews
@@ -18,7 +18,13 @@ public class RatingStatsApp  {
 
 	public static void main(final String[] args) {
 		JOptionPane loadWindow = new JOptionPane();
-
+		JFrame frame;
+		JPanel panel;
+		JLabel welcomeLabel;
+		JComboBox selectionBox;
+		String [] datasetOptions = new String[] {"1. Display computed statistics for specific dataID", "2. Add new collection and compute statistics.", "0. Exit program."};
+		JButton enterButton;
+	
 		String selection = "";
 
 		try {
@@ -27,17 +33,40 @@ public class RatingStatsApp  {
 
 			loadWindow.showMessageDialog(null, "Loading the datasets from:" + dh.getFolderPath() + System.lineSeparator());
 			loadWindow.showMessageDialog(null, dh.printDB() + System.lineSeparator() + "     " + dbSize + " datasets available");
+			loadWindow.setVisible(true);
 
+			frame = new JFrame("Rating Stats App");
+			panel = new JPanel(new GridBagLayout());
 
-			final String welcomeMessage = "Choose one of the following functions:" + System.lineSeparator()
-					+ "\t 1. Display computed statistics for specific dataID." + System.lineSeparator()
-					+ "\t 2. Add new collection and compute statistics." + System.lineSeparator() + "\t 0. Exit program."
-					+ System.lineSeparator();
+			GridBagConstraints layoutConstraints = new GridBagConstraints();
+			//layoutConstraints.gridwidth = 3;
+			//layoutConstraints.gridheight = 5;
+		
+			
 
-			System.out.println(welcomeMessage);
+			layoutConstraints.gridx = 0;
+			layoutConstraints.gridy = 0;
+			welcomeLabel = new JLabel("Choose one of the following functions: from the list below");
+			panel.add(welcomeLabel, layoutConstraints);
+
+			layoutConstraints.gridx = 0;
+			layoutConstraints.gridy = 1;
+			selectionBox = new JComboBox(datasetOptions);
+			panel.add(selectionBox, layoutConstraints);
+
+			layoutConstraints.gridx = 0;
+			layoutConstraints.gridy = 2;
+			enterButton = new JButton("Enter");
+			panel.add(enterButton, layoutConstraints);
+
+			panel.setVisible(true);
+			frame.add(panel);
+			frame.pack();
+			frame.setVisible(true);
+			
 			String newDataID = "";
 
-			selection = CONSOLE_INPUT.nextLine().strip();
+			//selection = CONSOLE_INPUT.nextLine().strip();
 			while (!selection.contains("0")) {
 				//dataset is processed 
 				boolean found = false;
@@ -76,7 +105,7 @@ public class RatingStatsApp  {
 					}
 					// end 2
 				} else if (selection.contains("h")) {
-					System.out.println(welcomeMessage);
+					//System.out.println(welcomeMessage);
 					selection = CONSOLE_INPUT.nextLine().strip();
 					continue;
 				} // end selection
