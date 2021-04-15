@@ -4,31 +4,34 @@ import java.util.Scanner;
 import java.io.IOException;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 /**
  * DO NOT MODIFY: Exploratory Data Analysis of Amazon Product Reviews
  * @author tesic
  * @version 2.0
  */
-public class RatingStatsApp  {
+public class RatingStatsApp implements ActionListener {
 
 	// Used to read from System's standard input
 	static final Scanner CONSOLE_INPUT = new Scanner(System.in);
+	private static 	JFrame frame;
+	private static JComboBox selectionBox;
+	private static  int option;
+	private static DatasetHandler dh;
 	
-
 	public static void main(final String[] args) {
+		option = 3;
 		JOptionPane loadWindow = new JOptionPane();
-		JFrame frame;
 		JPanel panel;
 		JLabel welcomeLabel;
-		JComboBox selectionBox;
 		String [] datasetOptions = new String[] {"1. Display computed statistics for specific dataID", "2. Add new collection and compute statistics.", "0. Exit program."};
 		JButton enterButton;
 	
 		String selection = "";
 
 		try {
-			DatasetHandler dh = new DatasetHandler();
+			dh = new DatasetHandler();
 			int dbSize = dh.getDataSets();
 
 			loadWindow.showMessageDialog(null, "Loading the datasets from:" + dh.getFolderPath() + System.lineSeparator());
@@ -36,6 +39,7 @@ public class RatingStatsApp  {
 			loadWindow.setVisible(true);
 
 			frame = new JFrame("Rating Stats App");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			panel = new JPanel(new GridBagLayout());
 
 			GridBagConstraints layoutConstraints = new GridBagConstraints();
@@ -57,6 +61,7 @@ public class RatingStatsApp  {
 			layoutConstraints.gridx = 0;
 			layoutConstraints.gridy = 2;
 			enterButton = new JButton("Enter");
+			enterButton.addActionListener(new RatingStatsApp());
 			panel.add(enterButton, layoutConstraints);
 
 			panel.setVisible(true);
@@ -64,85 +69,48 @@ public class RatingStatsApp  {
 			frame.pack();
 			frame.setVisible(true);
 			
-			String newDataID = "";
-
-			//selection = CONSOLE_INPUT.nextLine().strip();
-			while (!selection.contains("0")) {
-				//dataset is processed 
-				boolean found = false;
-				dbSize = dh.getDataSets();
-				if (selection.contains("1")) {
-					if (dbSize < 1) {
-						System.out.println("There is no data to select from, select another option\n");
-					} else {
-						System.out.println(dh.printDB());
-						System.out.println("Please enter dataID from the list: \n");
-						newDataID = CONSOLE_INPUT.nextLine().strip();
-						if (!(dh.checkID(newDataID))) {
-							System.out.print("dataID " + newDataID + " not in the current database, select another option \n");
-						} else {
-							found = true;
-						}
-					}
-					// end 1
-				} else if (selection.contains("2")) {
-					System.out.println("Please enter new unique dataID: \n");
-					newDataID = CONSOLE_INPUT.nextLine().strip();
-					if (!(dh.checkID(newDataID))) {
-						System.out.println("For new " + newDataID + " collection, what is the source file name?\n");
-						final String input = CONSOLE_INPUT.nextLine().strip();
-						boolean check = dh.addCollection(newDataID, input);
-						if (check) {
-							System.out.println("Collection " + newDataID + " added\n");
-							found = true;
-						} else {
-							System.out.println("File " + input + " not found.");
-							System.out.println("Try again.");
-						}
-					} else {
-						System.out.println(newDataID + " is in the current database, displaying existing statistics.\n");
-						found = true;
-					}
-					// end 2
-				} else if (selection.contains("h")) {
-					//System.out.println(welcomeMessage);
-					selection = CONSOLE_INPUT.nextLine().strip();
-					continue;
-				} // end selection
-
-				if (found) {
-					final String processStats = newDataID + ": statistics are already computed and saved \n"
-							+ "Choose one of the following functions:\n\n" + "\t 3. Use existing stat data.\n"
-							+ "\t 4. Process statistics again, I have new data.\n";
-					var d = dh.populateCollection(newDataID);
-					String rc = "3";
-					if (d.hasStats()) {
-						System.out.println(processStats);
-						rc = CONSOLE_INPUT.nextLine().strip();
-					}
-					if (rc.contains("4") || !(d.hasStats())) {
-						d.computeStats();
-						// if stats were computed again, save them.
-						dh.saveStatsToFile(newDataID);
-					}
-
-					// this blocks processes computed statistics in dh
-					int k = 20;
-					// prints report to file and console
-					dh.saveReportToFile(newDataID, k);
-
-					// new data saved
-					dh.saveDBToFile();
-				} // end if found
-
-				System.out.println("Please enter 0 to exit or 'h' to start again.\n");
-				selection = CONSOLE_INPUT.nextLine().strip();
-			} // end while
-
+			
 		} catch (IOException e) {
 			
 			loadWindow.showMessageDialog(null, "Dataset path not found: " + e.getMessage());
 		}
-	loadWindow.showMessageDialog(null, "Goodbye!");
+	
 	}// end mail
-}// end class
+
+	public static void setOption( int choice) {
+		option = choice;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		int choice = selectionBox.getSelectedIndex();
+			switch(choice) {
+				case 0: 
+				frame.dispose();
+				setOption(choice);
+				//Option1Window();
+				break;
+
+				case 1: 
+				frame.dispose();
+				setOption(choice);
+				break;
+
+				default: frame.dispose();
+				JOptionPane.showMessageDialog(null, "GoodBye!");
+				System.exit(0);
+				break; 
+			}	
+		
+	}
+	/*
+	public void Option1Window() {
+		JFrame option1Window = new JFrame();
+		JComboBox option1Box = new JComboBox();
+		JOptionPane pane = new JOptionPane();
+		pane.showInputDialog(option1Box, "Please enter a Dataset ID from the list below!");
+
+	}
+	*/
+}
