@@ -68,7 +68,7 @@ public class DatasetHandler{
 
 		StringBuilder dbContent = new StringBuilder("dataID,NUMBER,RATINGS,STATS" + System.lineSeparator());
 		for (final Dataset d : db) {
-			dbContent.append(d.toString() + "," + DataAnalysis.STAT_FILE_TEMPLATE.replace(DataAnalysis.DATA_ID_TEMPLATE, d.getDataId())+System.lineSeparator()); 
+			dbContent.append(d.toString() + "," + DataAnalysis.STAT_FILE_TEMPLATE.replace(DataAnalysis.DATA_ID_TEMPLATE, d.getDataId())+ "/n"); 
 		}
 		return dbContent.toString();
 	}

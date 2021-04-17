@@ -3,6 +3,9 @@ package project2;
 import java.util.Scanner;
 import java.io.IOException;
 import javax.swing.*;
+
+import jdk.nashorn.internal.scripts.JO;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -28,8 +31,6 @@ public class RatingStatsApp implements ActionListener {
 		String [] datasetOptions = new String[] {"1. Display computed statistics for specific dataID", "2. Add new collection and compute statistics.", "0. Exit program."};
 		JButton enterButton;
 	
-		String selection = "";
-
 		try {
 			dh = new DatasetHandler();
 			int dbSize = dh.getDataSets();
@@ -67,6 +68,7 @@ public class RatingStatsApp implements ActionListener {
 			panel.setVisible(true);
 			frame.add(panel);
 			frame.pack();
+			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
 			
 			
@@ -89,7 +91,7 @@ public class RatingStatsApp implements ActionListener {
 				case 0: 
 				frame.dispose();
 				setOption(choice);
-				//Option1Window();
+				Option1Window();
 				break;
 
 				case 1: 
@@ -104,13 +106,17 @@ public class RatingStatsApp implements ActionListener {
 			}	
 		
 	}
-	/*
+	
 	public void Option1Window() {
-		JFrame option1Window = new JFrame();
-		JComboBox option1Box = new JComboBox();
+		//JPanel option1Panel = new JPanel();
+		StringBuilder option1choicesBuilder = new StringBuilder();
 		JOptionPane pane = new JOptionPane();
-		pane.showInputDialog(option1Box, "Please enter a Dataset ID from the list below!");
-
+		//option1Panel.setLayout(null);
+		String [] comboString = dh.printDB().split("/n");
+		//JComboBox option1Box = new JComboBox(comboString);
+		//option1Panel.add(option1Box);
+		//option1Panel.setVisible(true);
+		JOptionPane.showInputDialog(null, "Select a dataset ID from the list below", "Rating Stats App - display stats", JOptionPane.QUESTION_MESSAGE,null , comboString, null);
 	}
-	*/
+
 }
