@@ -3,12 +3,9 @@ package project2;
 import java.util.Scanner;
 import java.io.IOException;
 import javax.swing.*;
-
-import jdk.nashorn.internal.scripts.JO;
-
 import java.awt.*;
 import java.awt.event.*;
-
+import javax.swing.table.*;
 /**
  * DO NOT MODIFY: Exploratory Data Analysis of Amazon Product Reviews
  * @author tesic
@@ -116,7 +113,27 @@ public class RatingStatsApp implements ActionListener {
 		//JComboBox option1Box = new JComboBox(comboString);
 		//option1Panel.add(option1Box);
 		//option1Panel.setVisible(true);
-		JOptionPane.showInputDialog(null, "Select a dataset ID from the list below", "Rating Stats App - display stats", JOptionPane.QUESTION_MESSAGE,null , comboString, null);
+		Object input = JOptionPane.showInputDialog(null, "Select a dataset ID from the list below", "Rating Stats App - display stats", JOptionPane.QUESTION_MESSAGE,null , comboString, null);
+		displayTable(input);
+
+	}
+
+	TableModel dataModel = new AbstractTableModel() {
+		public int getColumnCount() { return 10; }
+		public int getRowCount() { return 10;}
+		public Object getValueAt(int row, int col) { return Integer.valueOf(row*col); }
+};
+
+	public void displayTable(Object dataset) {
+		JTable table = new JTable();
+		table.setModel(dataModel);
+		
+		
+
+	}
+
+	public void Option2Window() { 
+		//
 	}
 
 }
