@@ -18,7 +18,7 @@ public class RatingStatsApp implements ActionListener {
 	private static 	JFrame frame;
 	private static JComboBox selectionBox;
 	private static  int option;
-	private static DatasetHandler dh;
+	static DatasetHandler dh;
 	
 	public static void main(final String[] args) {
 		option = 3;
@@ -105,16 +105,11 @@ public class RatingStatsApp implements ActionListener {
 	}
 	
 	public void Option1Window() {
-		//JPanel option1Panel = new JPanel();
-		StringBuilder option1choicesBuilder = new StringBuilder();
 		JOptionPane pane = new JOptionPane();
-		//option1Panel.setLayout(null);
-		String [] comboString = dh.printDB().split("/n");
-		//JComboBox option1Box = new JComboBox(comboString);
-		//option1Panel.add(option1Box);
-		//option1Panel.setVisible(true);
+		String [] comboString = dh.printDB().split("\n");
 		Object input = JOptionPane.showInputDialog(null, "Select a dataset ID from the list below", "Rating Stats App - display stats", JOptionPane.QUESTION_MESSAGE,null , comboString, null);
-		displayTable(input);
+		String dset = input.toString().substring(0, input.toString().indexOf(','));
+		displayTable(dset);
 
 	}
 
@@ -124,16 +119,25 @@ public class RatingStatsApp implements ActionListener {
 		public Object getValueAt(int row, int col) { return Integer.valueOf(row*col); }
 };
 
-	public void displayTable(Object dataset) {
+	public void displayTable(String id) {
 		JTable table = new JTable();
 		table.setModel(dataModel);
-		
+		try {
+			var d = dh.populateCollection(id);
+			d.computeStats();
+			dh.saveStatsToFile(id);
+			dh.saveReportToFile(id, 20);
+			System.out.println(id);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null,"Fail");
+			e.printStackTrace();
+		}
 		
 
 	}
 
 	public void Option2Window() { 
-		//
+		
 	}
 
 }
