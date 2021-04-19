@@ -105,5 +105,5 @@ public class DataAnalysis {
 	public static final String STAT_FILE_TEMPLATE = "ratingSummary_<dataID>.csv";
 	public static final String REPORT_FILE_TEMPLATE = "report_<dataID>.csv";
 	public static final String RESULTS_FILE_TEMPLATE = "results_<dataID>.csv";
-	public static final String SUMMARY_HEADER ="Id,degree,product avg,reviewer avg";
+	public static final String SUMMARY_HEADER ="Id,degree,product avg,reviewer avg,";
 }

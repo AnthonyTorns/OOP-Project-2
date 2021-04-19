@@ -1,6 +1,7 @@
 package project2;
 
 import java.util.Scanner;
+import java.util.Vector;
 import java.io.IOException;
 import javax.swing.*;
 import java.awt.*;
@@ -8,8 +9,11 @@ import java.awt.event.*;
 import javax.swing.table.*;
 /**
  * DO NOT MODIFY: Exploratory Data Analysis of Amazon Product Reviews
- * @author tesic
+ * @author Anthony Torns II
  * @version 2.0
+ * @ methods: actionperformed evaluates button press on start menu 
+ * Option1 window and Option 2window are methods to control wheter user chooses 1 or 2 on main menu 
+ * 
  */
 public class RatingStatsApp implements ActionListener {
 
@@ -121,7 +125,7 @@ public class RatingStatsApp implements ActionListener {
 };
 
 	public void displayTable(String id, boolean found) {
-		
+		JTable table;
 		try {
 			var d = dh.populateCollection(id);
 			if(found == true) {
@@ -129,7 +133,47 @@ public class RatingStatsApp implements ActionListener {
 				dh.saveStatsToFile(id);
 			}
 			String data = dh.saveReportToFile(id, 20);
-			System.out.println(data);
+			Vector<String> s = new Vector<String>();
+			int c = 0;
+			int i =1;
+			String[] column = new String[4];
+			String[][] datas = new String [20][4];
+			int j = 1;
+			for(String da : data.split(",")) {
+				if(c < 4){
+					column[c] = da;
+					c++;
+				}
+				else {
+					if(da.contains(System.lineSeparator())) {
+						datas[j][0] = da;
+						j++;
+					}
+					else {
+						datas[j][i] = da;
+						if(i == 3) {
+							i = 1;
+							j++;
+						}
+						else { 
+							i++;
+						}
+					}
+				}
+			}
+	
+			table = new JTable(datas, column);
+			JFrame tableFrame  = new JFrame("Display Stats");
+			tableFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			tableFrame.setSize(1000, 400);
+			tableFrame.add(new JScrollPane(table));
+			tableFrame.pack();
+			tableFrame.setVisible(true);
+			tableFrame.setLocationRelativeTo(null);
+		
+			
+		
+			//System.out.println(data);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null,"Fail");
 			e.printStackTrace();
@@ -142,7 +186,6 @@ public class RatingStatsApp implements ActionListener {
 		JOptionPane option2 = new JOptionPane("Rating Stats - New Collection");
 		String newID = option2.showInputDialog(null, "Select a dataset ID from the list below");
 			if (!(dh.checkID(newID))) {
-					//	System.out.println("In if block");
 						String newData = option2.showInputDialog(null, "What is the the source file name for the new collection?");
 						boolean check = dh.addCollection(newID, newData);
 						if(check == true){
