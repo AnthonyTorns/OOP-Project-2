@@ -89,17 +89,18 @@ public class DatasetHandler{
 	 * @param dataID unique dataset identifier
 	 * @param k number of top results to be saved in the report
 	 */
-	public void saveReportToFile(final String dataID, int k){
-		
+	public String saveReportToFile(final String dataID, int k){
+		String report = "";
 		try{
 			
-			String report = DataAnalysis.printReport(this.getCollection(dataID).getRatingStat(),k);
-			System.out.println(report);
+			report = DataAnalysis.printReport(this.getCollection(dataID).getRatingStat(),k);
+			//System.out.println(report);
 			Files.writeString(this.defineReportPath(dataID),report);
 			
 		}catch(IOException e){
 			System.out.println("Failed to save report, file not found");
 		}
+		return report;
 	}
 
 	/**

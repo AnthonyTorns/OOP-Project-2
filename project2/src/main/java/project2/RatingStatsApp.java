@@ -94,6 +94,7 @@ public class RatingStatsApp implements ActionListener {
 				case 1: 
 				frame.dispose();
 				setOption(choice);
+				Option2Window();
 				break;
 
 				default: frame.dispose();
@@ -109,7 +110,7 @@ public class RatingStatsApp implements ActionListener {
 		String [] comboString = dh.printDB().split("\n");
 		Object input = JOptionPane.showInputDialog(null, "Select a dataset ID from the list below", "Rating Stats App - display stats", JOptionPane.QUESTION_MESSAGE,null , comboString, null);
 		String dset = input.toString().substring(0, input.toString().indexOf(','));
-		displayTable(dset);
+		displayTable(dset, true);
 
 	}
 
@@ -119,15 +120,16 @@ public class RatingStatsApp implements ActionListener {
 		public Object getValueAt(int row, int col) { return Integer.valueOf(row*col); }
 };
 
-	public void displayTable(String id) {
-		JTable table = new JTable();
-		table.setModel(dataModel);
+	public void displayTable(String id, boolean found) {
+		
 		try {
 			var d = dh.populateCollection(id);
-			d.computeStats();
-			dh.saveStatsToFile(id);
-			dh.saveReportToFile(id, 20);
-			System.out.println(id);
+			if(found == true) {
+				d.computeStats();
+				dh.saveStatsToFile(id);
+			}
+			String data = dh.saveReportToFile(id, 20);
+			System.out.println(data);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null,"Fail");
 			e.printStackTrace();
@@ -137,7 +139,34 @@ public class RatingStatsApp implements ActionListener {
 	}
 
 	public void Option2Window() { 
-		
+		JOptionPane option2 = new JOptionPane("Rating Stats - New Collection");
+		String newID = option2.showInputDialog(null, "Select a dataset ID from the list below");
+			if (!(dh.checkID(newID))) {
+					//	System.out.println("In if block");
+						String newData = option2.showInputDialog(null, "What is the the source file name for the new collection?");
+						boolean check = dh.addCollection(newID, newData);
+						if(check == true){
+							JOptionPane.showMessageDialog(null, "Collection added!");
+							displayTable(newID,true);
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Collection not found, try again!");
+						}
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Collection is already in the databse, displaying existing statisitcs");
+				String [] choiceString = {"3 Use existing stat data.", "4 Process statistics again, I have new data."};
+				Object choice = JOptionPane.showInputDialog(null, "Statistics are already computed and saved \n"
+				+ "Choose one of the following functions:\n\n" + "\t 3. Use existing stat data.\n"
+				+ "\t 4. Process statistics again, I have new data.\n", "Rating Stats App - display stats", JOptionPane.QUESTION_MESSAGE,null , choiceString, null);
+				if(choice.toString().contains("4")) {
+					displayTable(newID, true);
+				}
+				else {
+					displayTable(newID, false);
+				}
+			}
+			
 	}
 
 }
